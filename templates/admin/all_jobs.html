@@ -1,0 +1,35 @@
+{% extends "admin/admin_base.html" %}
+{% block content %}
+<div class="table-responsive">
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Serial number</th>
+      <th scope="col">Title</th>
+      <th scope="col">Description</th>
+      <th scope="col">Created date</th>
+      <th scope="col">Job Type</th>
+      <th scope="col">Salary</th>
+      <th scope="col">Skills</th>
+      <th scope="col">Experience</th>
+      <th scope="col">Last date</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for i in data1 %}
+    <tr>
+      <th scope="row">{{ forloop.counter }}</th>
+      <td>{{ i.job_title }}</td>
+      <td>{{ i.job_description }}</td>
+      <td>{{ i.created_at }}</td>
+      <td>{{ i.job_type }}</td>
+      <td>{{ i.salary }}</td>
+      <td>{{ i.skills }}</td>
+      <td>{{ i.experience }}</td>
+      <td>{{ i.last_date }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+    </div>
+{% endblock %}

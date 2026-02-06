@@ -1,0 +1,12 @@
+{% extends 'company/company_base.html' %}
+
+{% block content %}
+{%load crispy_forms_tags %}
+  <form method="post" >
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit">Upload</button>
+  </form>
+
+  <p><a href="{% url 'home' %}">Return to home</a></p>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "company/company_base.html" %}
+{% block content %}
+<div class="table-responsive">
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Serial no</th>
+      <th scope="col">Name</th>
+      <th scope="col">Age</th>
+      <th scope="col">Phone Number</th>
+      <th scope="col">Email</th>
+      <th scope="col">Address</th>
+      <th scope="col">Job Title</th>
+      <th scope="col">Job Description</th>
+      <th scope="col">Job Type</th>
+      <th scope="col">Applied Date</th>
+      <th scope="col">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for i in job %}
+    <tr>
+      <th scope="row">{{ forloop.counter }}</th>
+      <td>{{ i.jobseeker.name }}</td>
+      <td>{{ i.jobseeker.age }}</td>
+      <td>{{ i.jobseeker.phone_number }}</td>
+      <td>{{ i.jobseeker.email }}</td>
+      <td>{{ i.jobseeker.address }}</td>
+      <td>{{ i.job.job_title }}</td>
+      <td>{{ i.job.job_description }}</td>
+      <td>{{ i.job.job_type }}</td>
+      <td>{{ i.applied_date }}</td>
+      <td>
+    {{ i.status }}
+    {% if i.status == "Applied" %}
+        <a href="{% url 'approve_application' i.id %}" class="btn btn-success btn-sm">Approve</a>
+        <a href="{% url 'reject_application' i.id %}" class="btn btn-danger btn-sm">Reject</a>
+    {% endif %}
+</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+    </div>
+{% endblock %}
