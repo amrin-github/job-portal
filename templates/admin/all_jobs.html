@@ -5,6 +5,7 @@
   <thead>
     <tr>
       <th scope="col">Serial number</th>
+      <th scope="col">Company</th>
       <th scope="col">Title</th>
       <th scope="col">Description</th>
       <th scope="col">Created date</th>
@@ -19,6 +20,7 @@
   {% for i in data1 %}
     <tr>
       <th scope="row">{{ forloop.counter }}</th>
+      <td>{{ i.user.name }}</td>
       <td>{{ i.job_title }}</td>
       <td>{{ i.job_description }}</td>
       <td>{{ i.created_at }}</td>

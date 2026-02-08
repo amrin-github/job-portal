@@ -1,0 +1,26 @@
+{% extends "jobseeker/jobseeker_base.html" %}
+{% block content %}
+
+<div class="table-responsive">
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Serial no</th>
+      <th scope="col">Job Title</th>
+      <th scope="col">Company</th>
+      <th scope="col">Applied</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for apply in apply %}
+    <tr>
+      <th scope="row">{{ forloop.counter }}</th>
+      <td>{{ apply.job.job_title }}</td>
+      <td>{{ apply.job.user.name }}</td>
+      <td>{{ apply.status}}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+    </div>
+{% endblock %}

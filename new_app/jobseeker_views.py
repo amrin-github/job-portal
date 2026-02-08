@@ -1,9 +1,12 @@
+from datetime import date
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
 from new_app.forms import LoginRegister, JobSeekerForm, ProfileDetailsForm
-from new_app.models import JobSeeker, ProfileDetail, Job, ApplyJob
+from new_app.models import JobSeeker, ProfileDetail, Job, ApplyJob, Interview
+
 
 @login_required(login_url='login_view')
 def jobseeker_base(request):
@@ -78,19 +81,38 @@ def edit_profile(request):
 # view all jobs
 @login_required(login_url='login_view')
 def jobseeker_jobs(request):
-    data = Job.objects.all()
-    return render(request,'jobseeker/jobseeker_jobs.html',{'data':data})
+    today = date.today()
+    job = Job.objects.filter(last_date__gte=today)
+    return render(request,'jobseeker/jobseeker_jobs.html',{'data':job})
 
 # apply jobs
 @login_required(login_url='login_view')
 def apply_jobs(request,id):
+    user_data = request.user
+    jobseeker = JobSeeker.objects.get(user=user_data)
+    profile = ProfileDetail.objects.get(user=jobseeker)
     job = Job.objects.get(id=id)
-    jobseeker = JobSeeker.objects.get(user=request.user)
-    already_applied = ApplyJob.objects.filter(job=job , jobseeker=jobseeker)
+    already_applied = ApplyJob.objects.filter(jobseeker=profile,job=job)
     if already_applied.exists():
         messages.info(request, 'Already applied.')
     else:
-        ApplyJob.objects.create(job=job, jobseeker=jobseeker)
+        ApplyJob.objects.create(jobseeker=profile,job=job)
         messages.success(request, 'Applied successfully.')
     return redirect('jobseeker_jobs')
+
+# view the applied jobs
+@login_required(login_url='login_view')
+def view_jobs(request):
+    jobseeker = JobSeeker.objects.get(user=request.user)
+    applied = ApplyJob.objects.filter(jobseeker__user=jobseeker)
+    return render(request,'jobseeker/apply_jobs.html',{'apply':applied})
+
+# show interviews
+@login_required(login_url='login_view')
+def show_interviews(request):
+    today = date.today()
+    user_data = request.user
+    jobseeker = ProfileDetail.objects.get(user__user=user_data)
+    interviews = Interview.objects.filter(interview__jobseeker=jobseeker,interview_date__gte=today)
+    return render(request,'jobseeker/show_interviews.html',{'interviews':interviews})
 

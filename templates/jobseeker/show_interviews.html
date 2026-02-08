@@ -1,0 +1,25 @@
+{% extends "jobseeker/jobseeker_base.html" %}
+{% block content %}
+<div class="table-responsive">
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Serial no</th>
+      <th scope="col">Job Title</th>
+      <th scope="col">Company</th>
+      <th scope="col">Interview</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for inter in interviews %}
+    <tr>
+      <th scope="row">{{ forloop.counter }}</th>
+      <td>{{ inter.interview.job.job_title }}</td>
+      <td>{{ inter.interview.job.user.name }}</td>
+      <td>{{ inter.interview_date}}  -  {{ inter.interview_time }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+    </div>
+{% endblock %}

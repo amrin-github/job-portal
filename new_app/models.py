@@ -31,7 +31,7 @@ class Job(models.Model):
     user = models.ForeignKey(Company,on_delete=models.CASCADE,related_name='details')
     job_title = models.CharField(max_length=20)
     job_description = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateField(auto_now_add=True)
     job_type = models.CharField(
         max_length=20,
         choices=[('Full Time','Full Time'),('Part Time','Part Time'),('Internship','Internship')]
@@ -53,13 +53,19 @@ class ProfileDetail(models.Model):
 # job application
 class ApplyJob(models.Model):
     job = models.ForeignKey(Job,on_delete=models.CASCADE,related_name='apply_job')
-    jobseeker = models.ForeignKey(JobSeeker,on_delete=models.CASCADE,related_name='apply_jobseeker')
+    jobseeker = models.ForeignKey(ProfileDetail,on_delete=models.CASCADE,related_name='apply_jobseeker')
     applied_date = models.DateField(auto_now_add=True)
     status = models.CharField(
         max_length=20,
-        choices=[('Applied','Applied'),('Approved','Approved'),('Rejected','Rejected')],
+        choices=[('Applied','Applied'),('Interview','Interview'),('Approved','Approved'),('Rejected','Rejected')],
         default='Applied'
     )
+
+# interview
+class Interview(models.Model):
+    interview = models.ForeignKey(ApplyJob,on_delete=models.CASCADE,related_name='interview')
+    interview_date = models.DateField()
+    interview_time = models.TimeField()
 
 
 

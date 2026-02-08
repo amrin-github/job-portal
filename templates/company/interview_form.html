@@ -1,0 +1,14 @@
+{% extends "company/company_base.html" %}
+{% block content %}
+{%load crispy_forms_tags %}
+<form method="post">
+    {% csrf_token %}
+    <label>Date</label>
+    <input type="date" name="date">
+
+    <label>Time</label>
+    <input type="time" name="time">
+
+    <button type="submit">Interview Scheduled</button>
+</form>
+{% endblock %}

@@ -10,10 +10,10 @@ urlpatterns = [
 
     path("admin_base", admin_views.admin_base, name="admin_base"),
     path("read_company", admin_views.read_company, name="read_company"),
-    path("edit_company/<int:id>", admin_views.edit_company, name="edit_company"),
+    # path("edit_company/<int:id>", admin_views.edit_company, name="edit_company"),
     path("delete_company/<int:id>", admin_views.delete_company, name="delete_company"),
     path("read_jobseeker", admin_views.read_jobseeker, name="read_jobseeker"),
-    path("edit_jobseeker/<int:id>", admin_views.edit_jobseeker, name="edit_jobseeker"),
+    # path("edit_jobseeker/<int:id>", admin_views.edit_jobseeker, name="edit_jobseeker"),
     path("delete_jobseeker/<int:id>", admin_views.delete_jobseeker, name="delete_jobseeker"),
     path("all_jobs", admin_views.all_jobs, name="all_jobs"),
 
@@ -24,6 +24,8 @@ urlpatterns = [
     # path("registration", jobseeker_views.registration, name="registration"),
     path("jobseeker_jobs", jobseeker_views.jobseeker_jobs, name="jobseeker_jobs"),
     path("apply_jobs/<int:id>", jobseeker_views.apply_jobs, name="apply_jobs"),
+    path("show_interviews", jobseeker_views.show_interviews, name="show_interviews"),
+    path("view_jobs", jobseeker_views.view_jobs, name="view_jobs"),
 
     path("company_base", company_views.company_base ,name="company_base"),
     path("company_form", company_views.company_form ,name="company_form"),
@@ -36,4 +38,6 @@ urlpatterns = [
     path("applied_jobseekers", company_views.applied_jobseekers ,name="applied_jobseekers"),
     path("approve_application/<int:id>", company_views.approve_application ,name="approve_application"),
     path("reject_application/<int:id>", company_views.reject_application ,name="reject_application"),
+    path("interview_application/<int:id>", company_views.interview_application ,name="interview_application"),
+    path("view_details/<int:id>", company_views.view_details ,name="view_details"),
 ]

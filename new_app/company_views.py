@@ -1,8 +1,12 @@
+from datetime import date
+
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
 from new_app.forms import LoginRegister, CompanyForm, JobPostingForm
-from new_app.models import Company, Job, ApplyJob
+from new_app.models import Company, Job, ApplyJob, Interview, ProfileDetail, JobSeeker
+
 
 @login_required(login_url='login_view')
 def company_base(request):
@@ -64,9 +68,10 @@ def job_posting(request):
 # all the jobs from the company
 @login_required(login_url='login_view')
 def company_jobs(request):
+    today = date.today()
     user_data = request.user
     company_user = Company.objects.get(user=user_data)
-    jobs = Job.objects.filter(user=company_user)
+    jobs = Job.objects.filter(user=company_user,last_date__gte=today)
     return render(request,'company/company_jobs.html',{'job':jobs})
 
 # edit company jobs
@@ -91,9 +96,12 @@ def delete_company_jobs(request,id):
 # applied jobseeker
 @login_required(login_url='login_view')
 def applied_jobseekers(request):
+    today = date.today()
     user_data = request.user
     company = Company.objects.get(user=user_data)
-    job = ApplyJob.objects.filter(job__user=company)
+    job = ApplyJob.objects.filter(job__user=company,applied_date__gte=today)
+    # if job.exists():
+    #     messages.success(request,'Interview Scheduled successfully')
     return render(request,"company/applied_jobseekers.html",{'job':job})
 
 # approve jobseeker
@@ -111,3 +119,23 @@ def reject_application(request,id):
     data.status = 'Rejected'
     data.save()
     return redirect('applied_jobseekers')
+
+# interview jobseeker
+@login_required(login_url='login_view')
+def interview_application(request,id):
+    data = ApplyJob.objects.get(id=id)
+    if request.method == "POST":
+        date = request.POST.get('date')
+        time = request.POST.get('time')
+        Interview.objects.create(interview=data,interview_date=date,interview_time=time)
+        data.status = 'Interview'
+        data.save()
+        return redirect('applied_jobseekers')
+    return render(request,'company/interview_form.html',{'interview':data})
+
+# view details of jobseeker
+@login_required(login_url='login_view')
+def view_details(request,id):
+    apply = ProfileDetail.objects.get(id=id)
+    return render(request,'company/view_details.html',{'profile_details':apply})
+

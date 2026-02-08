@@ -9,7 +9,6 @@
       <th scope="col">Age</th>
       <th scope="col">Phone Number</th>
       <th scope="col">Address</th>
-      <th scope="col">Edit</th>
       <th scope="col">Delete</th>
     </tr>
   </thead>
@@ -22,7 +21,6 @@
       <td>{{ i.email }}</td>
       <td>{{ i.phone_number }}</td>
       <td>{{ i.address }}</td>
-      <td><a class="btn btn-primary" href="{% url 'edit_jobseeker' i.id %}" role="button">Edit</a></td>
       <td><a class="btn btn-primary" href="{% url 'delete_jobseeker' i.id %}" role="button">Delete</a></td>
     </tr>
   {% endfor %}
