@@ -1,5 +1,13 @@
 {% extends "jobseeker/jobseeker_base.html" %}
 {% block content %}
+<!--<div class="row">-->
+<!--         <form method="get" class="form-inline " style="float:right;">-->
+<!--             <div class="md-form my-0">-->
+<!--                 {{ titleFilter.form }}-->
+<!--                 <button class="btn btn-primary mr-2" type="submit">Search</button>-->
+<!--             </div>-->
+<!--         </form>-->
+<!--</div>-->
 <div class="table-responsive">
 <table class="table">
   <thead>
@@ -8,6 +16,7 @@
       <th scope="col">Job Title</th>
       <th scope="col">Company</th>
       <th scope="col">Interview</th>
+      <th scope="col">Status</th>
     </tr>
   </thead>
   <tbody>
@@ -17,6 +26,15 @@
       <td>{{ inter.interview.job.job_title }}</td>
       <td>{{ inter.interview.job.user.name }}</td>
       <td>{{ inter.interview_date}}  -  {{ inter.interview_time }}</td>
+      <td>
+          {% if inter.interview.status == "Approved" %}
+          <h6>Approved</h6>
+          {% elif inter.interview.status == "Rejected" %}
+          <h6>Rejected</h6>
+          {% else %}
+          <h6>Interview</h6>
+          {% endif %}
+      </td>
     </tr>
   {% endfor %}
   </tbody>

@@ -3,6 +3,7 @@ from datetime import date
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
+from new_app.filters import CompanyFilter, JobseekerFilter
 from new_app.forms import CompanyForm, JobSeekerForm
 from new_app.models import Company, JobSeeker, Job
 
@@ -14,7 +15,13 @@ def admin_base(request):
 @login_required(login_url='login_view')
 def read_company(request):
     data = Company.objects.all()
-    return render(request,"admin/read_company.html",{'data1':data})
+    companyFilter = CompanyFilter(request.GET, queryset=data)
+    data = companyFilter.qs
+    context = {
+        'data1':data,
+        'companyFilter':companyFilter
+    }
+    return render(request,"admin/read_company.html",context)
 
 # # edit company
 # @login_required(login_url='login_view')
@@ -41,7 +48,13 @@ def delete_company(request,id):
 @login_required(login_url='login_view')
 def read_jobseeker(request):
     data = JobSeeker.objects.all()
-    return render(request,"admin/read_jobseeker.html",{'data1':data})
+    jobseekerFilter = JobseekerFilter(request.GET, queryset=data)
+    data = jobseekerFilter.qs
+    context = {
+        'data1': data,
+        'jobseekerFilter': jobseekerFilter
+    }
+    return render(request,"admin/read_jobseeker.html",context)
 
 # # edit jobseeker
 # @login_required(login_url='login_view')

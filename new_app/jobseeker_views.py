@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
+from new_app.filters import TitleFilter
 from new_app.forms import LoginRegister, JobSeekerForm, ProfileDetailsForm
 from new_app.models import JobSeeker, ProfileDetail, Job, ApplyJob, Interview
 
@@ -83,7 +84,13 @@ def edit_profile(request):
 def jobseeker_jobs(request):
     today = date.today()
     job = Job.objects.filter(last_date__gte=today)
-    return render(request,'jobseeker/jobseeker_jobs.html',{'data':job})
+    titleFilter = TitleFilter(request.GET, queryset=job)
+    job = titleFilter.qs
+    context = {
+        'data': job,
+        'titleFilter': titleFilter
+    }
+    return render(request,'jobseeker/jobseeker_jobs.html',context)
 
 # apply jobs
 @login_required(login_url='login_view')
@@ -105,7 +112,13 @@ def apply_jobs(request,id):
 def view_jobs(request):
     jobseeker = JobSeeker.objects.get(user=request.user)
     applied = ApplyJob.objects.filter(jobseeker__user=jobseeker)
-    return render(request,'jobseeker/apply_jobs.html',{'apply':applied})
+    # titleFilter = TitleFilter(request.GET, queryset=applied)
+    # applied = titleFilter.qs
+    # context = {
+    #     'apply': applied,
+    #     'titleFilter': titleFilter
+    # }
+    return render(request,'jobseeker/apply_jobs.html', {'apply': applied})
 
 # show interviews
 @login_required(login_url='login_view')
@@ -114,5 +127,11 @@ def show_interviews(request):
     user_data = request.user
     jobseeker = ProfileDetail.objects.get(user__user=user_data)
     interviews = Interview.objects.filter(interview__jobseeker=jobseeker,interview_date__gte=today)
+    # titleFilter = TitleFilter(request.GET, queryset=interviews)
+    # interviews = titleFilter.qs
+    # context = {
+    #     'interviews': interviews,
+    #     'titleFilter': titleFilter
+    # }
     return render(request,'jobseeker/show_interviews.html',{'interviews':interviews})
 

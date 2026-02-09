@@ -1,5 +1,13 @@
 {% extends "admin/admin_base.html" %}
 {% block content %}
+<div class="row">
+         <form method="get" class="form-inline " style="float:right;">
+             <div class="md-form my-0">
+                 {{ companyFilter.form }}
+                 <button class="btn btn-primary mr-2" type="submit">Search</button>
+             </div>
+         </form>
+</div>
 <table class="table">
   <thead>
     <tr>

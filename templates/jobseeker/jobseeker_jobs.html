@@ -7,7 +7,14 @@
     </div>
   {% endfor %}
 {% endif %}
-
+<div class="row">
+         <form method="get" class="form-inline " style="float:right;">
+             <div class="md-form my-0">
+                 {{ titleFilter.form }}
+                 <button class="btn btn-primary mr-2" type="submit">Search</button>
+             </div>
+         </form>
+</div>
 <div class="container">
   <div class="row">
       {% for job in data %}
