@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
-from new_app.filters import TitleFilter
+from new_app.filters import TitleFilter, ApplyCompanyFilter, InterCompanyFilter
 from new_app.forms import LoginRegister, JobSeekerForm, ProfileDetailsForm
 from new_app.models import JobSeeker, ProfileDetail, Job, ApplyJob, Interview
 
@@ -112,13 +112,13 @@ def apply_jobs(request,id):
 def view_jobs(request):
     jobseeker = JobSeeker.objects.get(user=request.user)
     applied = ApplyJob.objects.filter(jobseeker__user=jobseeker)
-    # titleFilter = TitleFilter(request.GET, queryset=applied)
-    # applied = titleFilter.qs
-    # context = {
-    #     'apply': applied,
-    #     'titleFilter': titleFilter
-    # }
-    return render(request,'jobseeker/apply_jobs.html', {'apply': applied})
+    applycompanyFilter = ApplyCompanyFilter(request.GET, queryset=applied)
+    applied = applycompanyFilter.qs
+    context = {
+        'apply': applied,
+        'applycompanyFilter': applycompanyFilter
+    }
+    return render(request,'jobseeker/apply_jobs.html', context)
 
 # show interviews
 @login_required(login_url='login_view')
@@ -127,11 +127,11 @@ def show_interviews(request):
     user_data = request.user
     jobseeker = ProfileDetail.objects.get(user__user=user_data)
     interviews = Interview.objects.filter(interview__jobseeker=jobseeker,interview_date__gte=today)
-    # titleFilter = TitleFilter(request.GET, queryset=interviews)
-    # interviews = titleFilter.qs
-    # context = {
-    #     'interviews': interviews,
-    #     'titleFilter': titleFilter
-    # }
-    return render(request,'jobseeker/show_interviews.html',{'interviews':interviews})
+    intercompanyFilter = InterCompanyFilter(request.GET, queryset=interviews)
+    interviews = intercompanyFilter.qs
+    context = {
+        'interviews':interviews,
+        'intercompanyFilter': intercompanyFilter
+    }
+    return render(request,'jobseeker/show_interviews.html',context)
 

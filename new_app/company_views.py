@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
-from new_app.filters import TitleFilter, CompanyFilter
+from new_app.filters import TitleFilter, CompanyFilter, ApplyCompanyFilter
 from new_app.forms import LoginRegister, CompanyForm, JobPostingForm
 from new_app.models import Company, Job, ApplyJob, Interview, ProfileDetail, JobSeeker
 
@@ -108,15 +108,13 @@ def applied_jobseekers(request):
     user_data = request.user
     company = Company.objects.get(user=user_data)
     job = ApplyJob.objects.filter(job__user=company,applied_date__gte=today)
-    # titleFilter = TitleFilter(request.GET, queryset=job)
-    # job = titleFilter.qs
-    # context = {
-    #     'job': job,
-    #     'titleFilter': titleFilter
-    # }
-    # if job.exists():
-    #     messages.success(request,'Interview Scheduled successfully')
-    return render(request,"company/applied_jobseekers.html", {'job':job})
+    applycompanyFilter = ApplyCompanyFilter(request.GET, queryset=job)
+    job = applycompanyFilter.qs
+    context = {
+        'job': job,
+        'applycompanyFilter': applycompanyFilter
+    }
+    return render(request,"company/applied_jobseekers.html", context)
 
 # approve jobseeker
 @login_required(login_url='login_view')
@@ -144,6 +142,8 @@ def interview_application(request,id):
         Interview.objects.create(interview=data,interview_date=date,interview_time=time)
         data.status = 'Interview'
         data.save()
+        if data.exists():
+            messages.success(request,'Interview Scheduled successfully')
         return redirect('applied_jobseekers')
     return render(request,'company/interview_form.html',{'interview':data})
 

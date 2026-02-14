@@ -39,6 +39,10 @@
       <td>{{ i.last_date }}</td>
       <td><a class="btn btn-primary" href="{% url 'edit_company_jobs' i.id %}" role="button">Edit</a> </td>
       <td><a class="btn btn-primary" href="{% url 'delete_company_jobs' i.id %}" role="button">Delete</a> </td>
+        {% empty %}
+      <td colspan="13" >
+          <h6>Not Found</h6>
+      </td>
     </tr>
   {% endfor %}
   </tbody>

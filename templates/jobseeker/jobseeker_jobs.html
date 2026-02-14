@@ -32,10 +32,17 @@
         <div class="card-footer text-body-secondary">
     Last Date: {{ job.last_date }}
   </div>
+
     </div>
+
   </div>
+       {% empty %}
+      <div class="mt-3">
+          <h6>Not Found</h6>
+      </div>
       {% endfor %}
 </div>
+
 </div>
 
 {% endblock %}

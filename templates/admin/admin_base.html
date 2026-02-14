@@ -665,8 +665,8 @@
               <div class="col-12 grid-margin">
                 <div class="card">
                   <div class="card-body">
-                    <h4 class="card-title">Welcome</h4>
                       {% block content %}
+                      <h4 class="card-title">Welcome {{ request.user }}</h4>
                       {% endblock %}
 <!--
 <!--                    <div class="table-responsive">-->

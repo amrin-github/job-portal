@@ -1,13 +1,13 @@
 {% extends "jobseeker/jobseeker_base.html" %}
 {% block content %}
-<!--<div class="row">-->
-<!--         <form method="get" class="form-inline " style="float:right;">-->
-<!--             <div class="md-form my-0">-->
-<!--                 {{ titleFilter.form }}-->
-<!--                 <button class="btn btn-primary mr-2" type="submit">Search</button>-->
-<!--             </div>-->
-<!--         </form>-->
-<!--</div>-->
+<div class="row">
+         <form method="get" class="form-inline " style="float:right;">
+             <div class="md-form my-0">
+                 {{ applycompanyFilter.form }}
+                 <button class="btn btn-primary mr-2" type="submit">Search</button>
+             </div>
+         </form>
+</div>
 <div class="table-responsive">
 <table class="table">
   <thead>
@@ -25,6 +25,10 @@
       <td>{{ apply.job.job_title }}</td>
       <td>{{ apply.job.user.name }}</td>
       <td>{{ apply.status}}</td>
+        {% empty %}
+      <td colspan="4" >
+          <h6>Not Found</h6>
+      </td>
     </tr>
   {% endfor %}
   </tbody>

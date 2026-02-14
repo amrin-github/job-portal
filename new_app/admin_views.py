@@ -42,7 +42,7 @@ def read_company(request):
 def delete_company(request,id):
     data = Company.objects.get(id=id)
     data.delete()
-    return redirect('read_customer')
+    return redirect('read_company')
 
 # read jobseeker
 @login_required(login_url='login_view')
