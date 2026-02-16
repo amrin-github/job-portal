@@ -26,7 +26,7 @@ def login_view(request):
             if user.is_company:
                 return redirect('company_base')
             if user.is_user:
-                return redirect('jobseeker_base')
+                return redirect('edit_profile')
 
         else:
             print('Invalid username or password')

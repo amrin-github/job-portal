@@ -58,6 +58,7 @@ def jobseeker_profile(request):
 # edit profile
 @login_required(login_url='login_view')
 def edit_profile(request):
+    messages.info(request, "Please fill the qualification,resume and other details too.")
     data1 = JobSeeker.objects.get(user=request.user)
     if ProfileDetail.objects.filter(user=data1).exists():
         data = ProfileDetail.objects.get(user=data1)
@@ -98,6 +99,9 @@ def apply_jobs(request,id):
     user_data = request.user
     jobseeker = JobSeeker.objects.get(user=user_data)
     profile = ProfileDetail.objects.get(user=jobseeker)
+    if not profile:
+        messages.error(request, "Complete your profile first.")
+        return redirect('edit_profile')
     job = Job.objects.get(id=id)
     already_applied = ApplyJob.objects.filter(jobseeker=profile,job=job)
     if already_applied.exists():
