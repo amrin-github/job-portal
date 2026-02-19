@@ -142,8 +142,6 @@ def interview_application(request,id):
         Interview.objects.create(interview=data,interview_date=date,interview_time=time)
         data.status = 'Interview'
         data.save()
-        if data.exists():
-            messages.success(request,'Interview Scheduled successfully')
         return redirect('applied_jobseekers')
     return render(request,'company/interview_form.html',{'interview':data})
 
